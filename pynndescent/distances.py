@@ -489,9 +489,12 @@ def alternative_dot(x, y):
         return -np.log2(result)
 
 
-@numba.vectorize(fastmath=True)
-def correct_alternative_cosine(d):
-    return 1.0 - pow(2.0, -d)
+@numba.njit(fastmath=True)
+def correct_alternative_cosine(ds):
+    result = np.empty_like(ds)
+    for i in range(ds.shape[0]):
+        result[i] = 1.0 - np.power(2.0,ds[i])
+    return result
 
 
 @numba.njit(fastmath=True)
